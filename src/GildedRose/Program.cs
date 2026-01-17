@@ -46,10 +46,10 @@ public class Program
             Console.WriteLine("name, sellIn, quality");
             for (var j = 0; j < Items.Count; j++)
             {
-                System.Console.WriteLine(Items[j].Name + ", " + Items[j].SellIn + ", " + Items[j].Quality);
+                Console.WriteLine(Items[j].Name + ", " + Items[j].SellIn + ", " + Items[j].Quality);
             }
             Console.WriteLine("");
-            app.UpdateQuality();
+            app.UpdateItems();
         }
     }
 }
