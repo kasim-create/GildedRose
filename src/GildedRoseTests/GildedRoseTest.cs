@@ -4,6 +4,10 @@ namespace GildedRoseTests;
 
 public class GildedRoseTest
 {
+    private const string BackStagePass = "Backstage passes to a TAFKAL80ETC concert";
+    private const string AgedBrie = "Aged Brie";
+    private const string ElixirOfTheMongoose = "Elixir of the Mongoose";
+
     [Fact]
     public void Foo()
     {
@@ -14,42 +18,46 @@ public class GildedRoseTest
     }
 
     [Fact]
-    public void IncreaseQuality_SellByDatePassed() 
+    public void IncreaseQuality_SellByDatePassed_SellInIsNegative() 
     {
-        List<Item> items = [new Item { Name = "Elixir of the Mongoose", SellIn = -1, Quality = 10 }];
+        List<Item> items = [new Item { Name = ElixirOfTheMongoose, SellIn = -1, Quality = 10 }];
         GildedRose app = new(items);
         app.UpdateItems();
-        Assert.Equal("foo", items[0].Name);
+        Assert.Equal(8, items[0].Quality);
     }
 
+    [Fact]
+    public void IncreaseQuality_SellByDatePassed_SellInIsZero()
+    {
+        List<Item> items = [new Item { Name = ElixirOfTheMongoose, SellIn = 0, Quality = 10 }];
+        GildedRose app = new(items);
+        app.UpdateItems();
+        Assert.Equal(9, items[0].Quality);
+    }
+
+    [Fact]
     public void IncreaseQuality_AgedBrieIncreaseQuality()
     {
-
-
-
+        List<Item> items = [new Item { Name = AgedBrie, SellIn = 10, Quality = 10 }];
+        GildedRose app = new(items);
+        app.UpdateItems();
+        Assert.Equal(11, items[0].Quality);
     }
 
+    [Fact]
     public void IncreaseQuality_BackstagePass_10DaysOrLess()
     {
+        List<Item> items =
+            [
+            new Item { Name = BackStagePass, SellIn = 10, Quality = 10 },
+            new Item { Name = BackStagePass, SellIn = 5, Quality = 5 },
+            new Item { Name = BackStagePass, SellIn = -1, Quality = 5 }
+            ];
 
-        /* can possibly just combine the backstagepass tests 
-         and add separate items with different SellIn values and with separate asserts*/
-
-    }
-
-    public void IncreaseQuality_BackstagePass_5DaysOrLess()
-    {
-
-        /* can possibly just combine the backstagepass tests 
-          and add separate items with different SellIn values and with separate asserts*/
-
-    }
-
-    public void IncreaseQuality_BackstagePass_ConcertPassed()
-    {
-
-        /* can possibly just combine the backstagepass tests 
-          and add separate items with different SellIn values and with separate asserts*/    
-
+        GildedRose app = new(items);
+        app.UpdateItems();
+        Assert.Equal(12, items[0].Quality);
+        Assert.Equal(8, items[1].Quality);
+        Assert.Equal(0, items[2].Quality);
     }
 }
